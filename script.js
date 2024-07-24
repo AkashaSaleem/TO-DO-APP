@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const taskNameInput = document.getElementById('task-name');
   const dueDateInput = document.getElementById('due-date');
   const priorityLevelSelect = document.getElementById('priority-level');
-  const taskCategoryInput = document.getElementById('category'); // Updated ID
+  const taskCategoryInput = document.getElementById('category');
   const taskList = document.getElementById('task-list');
   const filterPriority = document.getElementById('filter-priority');
   const filterCategory = document.getElementById('filter-category');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: taskNameInput.value.trim(),
       dueDate: new Date(dueDateInput.value),
       priority: priorityLevelSelect.value,
-      category: taskCategoryInput.value.trim(), // Correct category input
+      category: taskCategoryInput.value.trim(),
       completed: false
     };
 
@@ -113,14 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const filteredTasks = filterTasks();
     const sortedTasks = sortTasks(filteredTasks);
 
+    // Ensure the `data-index` attribute corresponds to the original task array
     sortedTasks.forEach((task, index) => {
+      const originalIndex = tasks.indexOf(task); // Get the original index in the tasks array
+
       const taskItem = document.createElement('li');
       taskItem.className = task.completed ? 'completed' : '';
+      taskItem.dataset.index = originalIndex; // Use data-index to keep track of the task index
 
       taskItem.innerHTML = `
         <span>${task.name} - ${task.dueDate.toDateString()} - ${task.priority} - ${task.category}</span>
-        <button onclick="toggleTaskCompletion(${index})">${task.completed ? 'Undo' : 'Complete'}</button>
-        <button onclick="removeTask(${index})">Remove</button>
+        <button onclick="toggleTaskCompletion(${originalIndex})">${task.completed ? 'Undo' : 'Complete'}</button>
+        <button onclick="removeTask(${originalIndex})">Remove</button>
       `;
 
       taskList.appendChild(taskItem);
@@ -145,8 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const highPriorityTasks = tasks.filter(task => task.priority === 'high').length;
     const mediumPriorityTasks = tasks.filter(task => task.priority === 'medium').length;
     const lowPriorityTasks = tasks.filter(task => task.priority === 'low').length;
-    const workTasks = tasks.filter(task => task.category === 'work').length;
-    const personalTasks = tasks.filter(task => task.category === 'personal').length;
+    const workTasks = tasks.filter(task => task.category === 'Work').length;
+    const personalTasks = tasks.filter(task => task.category === 'Personal').length;
 
     document.getElementById('total-tasks').textContent = totalTasks;
     document.getElementById('completed-tasks').textContent = completedTasks;
@@ -157,15 +161,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('personal-tasks').textContent = personalTasks;
 
     if (totalTasks > 0) {
-      const averageDueDate = new Date(tasks.reduce((sum, task) => sum + new Date(task.dueDate).getTime(), 0) / totalTasks);
+      const averageDueDate = new Date(
+        tasks.reduce((sum, task) => sum + new Date(task.dueDate).getTime(), 0) / totalTasks
+      );
       document.getElementById('average-due-date').textContent = averageDueDate.toDateString();
 
-      const taskNames = tasks.map(task => task.name);
-      const longestTaskName = taskNames.reduce((longest, name) => name.length > longest.length ? name : longest, '');
-      const shortestTaskName = taskNames.reduce((shortest, name) => name.length < shortest.length ? name : shortest, taskNames[0]);
+      const longestTaskName = tasks.reduce((longest, task) => task.name.length > longest.length ? task.name : longest, '');
+      document.getElementById('longest-task-name').textContent = longestTaskName || 'N/A';
 
-      document.getElementById('longest-task-name').textContent = longestTaskName;
-      document.getElementById('shortest-task-name').textContent = shortestTaskName;
+      const shortestTaskName = tasks.reduce((shortest, task) => task.name.length < shortest.length ? task.name : shortest, tasks[0] ? tasks[0].name : '');
+      document.getElementById('shortest-task-name').textContent = shortestTaskName || 'N/A';
     } else {
       document.getElementById('average-due-date').textContent = 'N/A';
       document.getElementById('longest-task-name').textContent = 'N/A';
@@ -173,8 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  window.toggleTaskCompletion = toggleTaskCompletion;
+  
   window.removeTask = removeTask;
-
-  updateStatistics();
+  window.toggleTaskCompletion = toggleTaskCompletion;
 });
