@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>To-Do List App <img src="images/icon.png" alt="icon"></h1>
+    <form id="task-form">
+      <input type="text" id="task-name" placeholder="Task Name" required>
+      <input type="date" id="due-date" required>
+      <select id="priority-level"required>
+        <option value="" disabled selected hidden>Priority Level</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <select id="category" required>
+        <option value="" disabled selected hidden>Category</option>
+        <option value="Personal">Personal</option>
+        <option value="Work">Work</option>
+        <option value="Professional">Professional</option>
+      </select>
+      <button type="submit">Add Task</button>
+    </form>
+    <div id="filters">
+      <h2>Filter Tasks</h2>
+      <select id="filter-priority">
+        <option value="all">All Priorities</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <select id="filter-category">
+        <option value="all">All Categories</option>
+        <option value="Personal">Personal</option>
+        <option value="Work">Work</option>
+        <option value="Professional">Professional</option>
+      </select>
+      <select id="filter-due-date">
+        <option value="all">All Dates</option>
+        <option value="today">Today</option>
+        <option value="tomorrow">Tomorrow</option>
+        <option value="upcoming">Upcoming</option>
+      </select>
+    </div>
+    <div id="sorting">
+      <h2>Sort Tasks</h2>
+      <select id="sort-by">
+        <option value="due-date-asc">Due Date (Ascending)</option>
+        <option value="due-date-desc">Due Date (Descending)</option>
+        <option value="priority-high-low">Priority (High to Low)</option>
+        <option value="priority-low-high">Priority (Low to High)</option>
+        <option value="category">Category (Alphabetical)</option>
+      </select>
+    </div>
+    <ul id="task-list"></ul>
+    <div id="statistics">
+      <h2>Statistics</h2>
+      <p>Total Tasks: <span id="total-tasks">0</span></p>
+      <p>Completed Tasks: <span id="completed-tasks">0</span></p>
+      <p>High Priority Tasks: <span id="high-priority-tasks">0</span></p>
+      <p>Medium Priority Tasks: <span id="medium-priority-tasks">0</span></p>
+      <p>Low Priority Tasks: <span id="low-priority-tasks">0</span></p>
+      <p>Work Tasks: <span id="work-tasks">0</span></p>
+      <p>Personal Tasks: <span id="personal-tasks">0</span></p>
+      <p>Average Due Date: <span id="average-due-date">N/A</span></p>
+      <p>Longest Task Name: <span id="longest-task-name">N/A</span></p>
+      <p>Shortest Task Name: <span id="shortest-task-name">N/A</span></p>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
